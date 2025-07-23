@@ -12,6 +12,7 @@
     <meta name="author" content="Rafael Mendes">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" type="image/png" href="/favicon-32x32.png">
     <style>
         :root {
@@ -150,18 +151,6 @@
             color: var(--primary-color);
         }
 
-        .back-to-top {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: none;
-            z-index: 99;
-        }
-
-        .back-to-top:hover {
-            transform: scale(1.1);
-        }
-
         #contact {
             background-color: var(--light-color);
         }
@@ -201,25 +190,72 @@
             border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
-        /* CSS Botao WhatsApp */
-        .whatsapp-fixo {
+        /* CSS Botoes Voltar e Whatsapp */
+        .whatsapp-float {
             position: fixed;
+            bottom: 20px;
             right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            /* Cor do WhatsApp */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #ffffff;
+            text-decoration: none;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            background: #128C7E;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            color: #ffffff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
             z-index: 1000;
         }
 
-        .whatsapp-fixo img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s;
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
         }
 
-        .whatsapp-fixo img:hover {
-            transform: scale(1.1);
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
         }
 
         /* Scrollbar para navegadores baseados em WebKit */
@@ -298,10 +334,15 @@
         }
 
         @media (max-width: 768px) {
-            .whatsapp-fixo {
-                top: auto;
+            .whatsapp-float {
                 bottom: 80px;
-                transform: none;
+                right: 20px;
+                left: auto;
+            }
+
+            .back-to-top {
+                bottom: 20px;
+                left: 20px;
             }
 
             .service-card {
@@ -328,7 +369,6 @@
 
         .navbar-toggler:focus {
             box-shadow: none;
-            /* Remove a borda azul do Bootstrap ao clicar */
         }
 
         /* As 3 linhas do hambúrguer */
@@ -338,10 +378,8 @@
             height: 3px;
             margin: 5px auto;
             background-color: #333;
-            /* Cor das linhas */
             border-radius: 2px;
             transition: all 0.3s ease-in-out;
-            /* A mágica da animação suave */
         }
 
         /* Animação para o estado "aberto" (quando o botão tiver a classe .open) */
@@ -358,6 +396,110 @@
         #hamburger-button.open span:nth-child(3) {
             /* Gira a terceira linha em -45 graus */
             transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Linha Ativa no Menu */
+        .navbar .nav-link:not(.dropdown-toggle) {
+            position: relative;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .nav-link:not(.dropdown-toggle)::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            /* Posição da linha abaixo do texto */
+            left: 0;
+            width: 0;
+            /* Largura inicial zero (invisível) */
+            height: 2px;
+            /* Espessura da linha */
+            background: var(--primary-color);
+            /* Cor da linha usando sua variável */
+            transition: width 0.3s ease;
+            /* Animação suave */
+        }
+
+        .navbar .nav-link:hover:not(.dropdown-toggle)::after,
+        .navbar .nav-link.active:not(.dropdown-toggle)::after {
+            width: 100%;
+            /* Linha preenche a largura total ao hover ou quando ativo */
+        }
+
+        .navbar .nav-link:hover:not(.dropdown-toggle),
+        .navbar .nav-link.active:not(.dropdown-toggle) {
+            color: var(--primary-color);
+            /* Cor do texto do link ativo/hover */
+        }
+
+        .navbar .nav-dropdown-toggle {
+            /* Esta é a classe do seu item "Mais" */
+            display: block;
+            /* Garante que ocupe o espaço corretamente */
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            font-weight: 500;
+            /* Pode ajustar conforme desejar */
+            color: var(--dark-color);
+            /* Cor padrão do texto (igual aos outros links quando inativos) */
+            text-decoration: none;
+            /* Remove sublinhado padrão */
+            transition: color 0.3s ease;
+            /* Transição de cor ao hover */
+            white-space: nowrap;
+            /* Evita quebra de linha */
+            position: relative;
+            /* Importante para que a seta não tenha problemas */
+        }
+
+        .navbar .nav-dropdown-toggle:hover {
+            color: var(--primary-color);
+            /* Cor ao passar o mouse */
+        }
+
+        /* CSS para Abas de Serviços com Estilo Moderno */
+        .nav-tabs {
+            border-bottom: 1px solid #dee2e6;
+            /* Linha cinza contínua */
+        }
+
+        .nav-tabs .nav-item {
+            margin-bottom: -1px;
+            /* Alinha o botão com a borda inferior */
+        }
+
+        .nav-tabs .nav-link {
+            border: 1px solid transparent;
+            /* Borda transparente por padrão */
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            color: var(--primary-color);
+            /* Cor do texto das abas inativas */
+            font-weight: 500;
+        }
+
+        .nav-tabs .nav-link:not(.active):hover {
+            border-color: #e9ecef #e9ecef #dee2e6;
+            /* Borda sutil no hover */
+            isolation: isolate;
+            /* Garante que o fundo não sobreponha a borda principal */
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--dark-color);
+            /* Cor do texto da aba ativa */
+            background-color: #fff;
+            /* Fundo branco para a aba ativa */
+            border-color: #dee2e6 #dee2e6 #fff;
+            /* Borda que se conecta com o conteúdo */
+            font-weight: bold;
+        }
+
+        /* Remove o foco azul padrão do Bootstrap */
+        .nav-tabs .nav-link:focus {
+            box-shadow: none;
         }
     </style>
 </head>
@@ -377,23 +519,26 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#" onclick="scrollToSection('home'); return false;">Home</a>
+                        <a class="nav-link active" href="#home"
+                            onclick="scrollToSection('home'); return false;">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="scrollToSection('services'); return false;">Serviços</a>
+                        <a class="nav-link" href="#services"
+                            onclick="scrollToSection('services'); return false;">Serviços</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="scrollToSection('about'); return false;">Sobre Mim</a>
+                        <a class="nav-link" href="#about" onclick="scrollToSection('about'); return false;">Sobre
+                            Mim</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="scrollToSection('contact'); return false;">Contato</a>
+                        <a class="nav-link" href="#contact"
+                            onclick="scrollToSection('contact'); return false;">Contato</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown">
-                            Mais
+                        <a class="nav-dropdown-toggle dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false"> Mais
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
                                     data-bs-target="#blogModal">Blog</a></li>
                             <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
@@ -889,8 +1034,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="service" class="form-label">Serviço de Interesse</label>
-                            <select class="form-select" name="service">
-                                <option selected>Selecione um serviço</option>
+                            <select class="form-select" name="service" required>
+                                <option value="" selected disabled hidden>Selecione um serviço</option>
                                 <option>Site One Page</option>
                                 <option>Site Institucional</option>
                                 <option>Landing Page</option>
@@ -902,8 +1047,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="message" class="form-label">Mensagem</label>
-                            <textarea style="resize: none;" class="form-control" name="message" rows="5"
-                                minlength="10" required></textarea>
+                            <textarea style="resize: none;" class="form-control" name="message" rows="5" minlength="10"
+                                required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
                     </form>
@@ -1307,17 +1452,14 @@
         </div>
     </div>
 
-    <!-- Botao do Whatsapp -->
-    <a href="https://wa.me/5583920006113?text=Olá%2C%20quero%20falar%20com%20você!" target="_blank"
-        class="whatsapp-fixo">
-        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" />
+    <a href="https://wa.me/5583920006113?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20um%20hor%C3%A1rio."
+        class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- Botao de Voltar ao Topo -->
-    <a href="#" onclick="scrollToSection('home'); return false;" class="back-to-top btn btn-primary rounded-circle p-3"
-        title="Voltar ao topo">
-        <i class="bi bi-arrow-up"></i>
-    </a>
+    <button class="back-to-top" id="back-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -1329,17 +1471,6 @@
                 element.scrollIntoView({ behavior: 'smooth' });
             }
         }
-
-        // Botão "Voltar ao topo"
-        window.addEventListener('scroll', function () {
-            var backToTop = document.querySelector('.back-to-top');
-            backToTop.style.display = (window.pageYOffset > 300) ? 'block' : 'none';
-        });
-
-        document.querySelector('.back-to-top').addEventListener('click', function (e) {
-            e.preventDefault();
-            scrollToSection('home');
-        });
 
         // Modal de orçamento - preencher serviço automaticamente
         document.getElementById('quoteModal').addEventListener('show.bs.modal', function (event) {
@@ -1455,9 +1586,102 @@
             window.open('https://versiculodia-eta.vercel.app/', '_blank');
         }
 
-        // Funçao para Menu Hamburguer virar X
-        document.getElementById('hamburger-button').addEventListener('click', function () {
+        // NOVO: Back to Top Button
+        const backToTopBtn = document.getElementById('back-to-top'); // Certifique-se que o HTML tem id="back-to-top"
+
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 500) { // Mostra o botão após rolar 500px
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', function () {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Rolagem suave
+            });
+        });
+
+        // NOVO: Active Navigation Link (Linha Ativa)
+        const sections = document.querySelectorAll('section[id]'); // Seleciona todas as seções com ID
+        const navLinks = document.querySelectorAll('.nav-link'); // Seleciona todos os links de navegação
+        const navMenu = document.getElementById('navbarNav'); // Seu menu colapsável do Bootstrap
+        const hamburger = document.getElementById('hamburger-button'); // Seu botão hambúrguer
+
+        window.addEventListener('scroll', function () {
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                // Ajuste '100' conforme necessário para quando a seção deve ser considerada ativa (offset para o cabeçalho fixo)
+                if (window.scrollY >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            // navLinks.forEach(link => {
+            //     link.classList.remove('active'); // Remove a classe 'active' de todos os links
+            //     if (link.getAttribute('href') && link.getAttribute('href').includes(`#${current}`)) {
+            //         link.classList.add('active'); // Adiciona a classe 'active' ao link da seção atual
+            //     }
+            // });
+        });
+
+        // NOVO: Fechar mobile menu quando clicar em links (e animar hambúrguer)
+        navLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                // Verifica se o menu está aberto (no Bootstrap, ele tem a classe 'show' quando expandido)
+                if (navMenu.classList.contains('show')) {
+                    // Fechar o menu colapsável do Bootstrap
+                    const bsCollapse = new bootstrap.Collapse(navMenu, {
+                        toggle: false // Não alterna, apenas esconde
+                    });
+                    bsCollapse.hide();
+
+                    // Reseta a animação do hambúrguer
+                    if (hamburger.classList.contains('open')) {
+                        hamburger.classList.remove('open');
+                    }
+                }
+            });
+        });
+
+        // Esta parte faz o hambúrguer virar um X quando clicado.
+        hamburger.addEventListener('click', function () {
             this.classList.toggle('open');
+        });
+
+        const triggerTabList = document.querySelectorAll('#servicesTab button');
+        triggerTabList.forEach(triggerEl => {
+            triggerEl.addEventListener('click', event => {
+                // Remove "show" e "active" de todos os panes
+                const allPanes = document.querySelectorAll('#servicesTabContent .tab-pane');
+                allPanes.forEach(pane => {
+                    pane.classList.remove('show', 'active');
+                });
+
+                // Ativa apenas o pane clicado
+                const targetSelector = triggerEl.getAttribute('data-bs-target');
+                const targetPane = document.querySelector(targetSelector);
+                targetPane.classList.add('show', 'active');
+            });
+        });
+
+        window.addEventListener('scroll', function () {
+            if (window.scrollY < 300) { // Quando estiver no topo da página
+                const basicTabButton = document.querySelector('#basic-tab');
+                const basicTabPane = document.querySelector('#basic');
+
+                // Remove active das outras abas
+                document.querySelectorAll('#servicesTab .nav-link').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('#servicesTabContent .tab-pane').forEach(pane => pane.classList.remove('show', 'active'));
+
+                // Ativa o Básico
+                basicTabButton.classList.add('active');
+                basicTabPane.classList.add('show', 'active');
+            }
         });
     </script>
 </body>
